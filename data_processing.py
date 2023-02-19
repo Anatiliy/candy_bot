@@ -11,8 +11,10 @@ class GameData:
         self.total = 0  # атребут, фиксирующий количества конфет в игре
         self.count = 0 # атребут, фиксирующий количество оконченых игр
         self.win = 'None' # атребут пртнимает значение 1 если победил бот и значение 0 если победил игрок
-        self.botbag = 500 # количество конфет в мешке бота (в данный момент в программе не задействован)
-        self.oppobag = 0 # количество конфет в мешке игрока (в данный момент в программе не задействован)
+        self.botbag = 500 # количество конфет в мешке бота
+        self.oppobag = 0 # количество конфет в мешке игрока
+        self.lot = 0  # количество конфет, которое можно взять из вазы
+
 
     # метод конвертирующий объект класса в строку
     def toStr(self):
@@ -32,20 +34,20 @@ class GameData:
 
     # метод, осуществляющий ход бота
     def move(self):
-        if self.number < 29:
+        if self.number < self.lot + 1:
             result = self.number
             self.number = 0
             return result
-        elif self.number == 29:
-            result = randint(1, 28)
+        elif self.number == self.lot + 1:
+            result = randint(1, self.lot)
             self.number -= result
             return result
-        elif 28 < self.number < 57:
-            result = self.number - 29
-            self.number = 29
+        elif self.lot < self.number < self.lot * 2 + 1:
+            result = self.number - self.lot + 1
+            self.number = self.lot + 1
             return result
         else:
-            result = randint(1, 28)
+            result = randint(1, self.lot)
             self.number -= result
             return result
 
@@ -64,6 +66,7 @@ class DataProcessing:
         self.data[id] = self.data.get(id, GameData())
         self.data[id].start = 1
         self.data[id].opponame = name
+        self.data[id].lot = randint(10, 28)
 
     # перезапись файла информацией из переменной
     def overwrite(self):
