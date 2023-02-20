@@ -15,7 +15,6 @@ class GameData:
         self.oppobag = 0 # количество конфет в мешке игрока
         self.lot = 0  # количество конфет, которое можно взять из вазы
 
-
     # метод конвертирующий объект класса в строку
     def toStr(self):
         return ';'.join(list(map(lambda item: str(item) if not isinstance(item, str) else item, [self.start, self.number, self.opponame, self.total, self.count, self.win, self.botbag, self.oppobag])))
@@ -54,6 +53,20 @@ class GameData:
     # метод, осуществляющий ход игрока
     def opponent(self, oppocandy):
         self.number -= oppocandy
+
+    # метод, осуществляющий ход игрока
+    def botContribution(self, handout = 0):
+        if handout:  # если у бота нехватает конфет, и ему одолжил их игрок
+            self.total = 50
+            self.oppobag -= handout
+            self.number = self.total
+            self.botbag = 0
+        else:
+            self.total = randint(50, 100)
+            if self.total > self.botbag:
+                self.botContribution()
+            self.number = self.total
+            self.botbag -= self.total
 
 
 class DataProcessing:
