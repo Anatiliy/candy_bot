@@ -21,7 +21,7 @@ def change_word(number: int):
 async def mes_start(message: Message):
     if message.from_id == int(getenv('ADMIN_ID')):  # если пишет администратор
         await message.answer(f'Привет, {message.from_user.first_name}!\nДоступные команды:\n/game - начать игру.\n/view - показать информацию о пользователях')
-    elif games.data[message.from_id].count:
+    elif message.from_id in games.data:
         await message.answer(f'Привет, {message.from_user.first_name}!\nПродолжим игру?\nНапоминаю:\nУ тебя в мешке {change_word(games.data[message.from_id].oppobag)}, у меня в мешке {change_word(games.data[message.from_id].botbag)}.')
     else:
         await message.answer(f'Привет, {message.from_user.first_name}! В "конфеты" играть будем?\nУсловия игры:\nУ меня есть мешок, в котором лежит 500 конфет.\nОдин из нас кладёт из своего мешка в вазу от 50 до 100 конфет.\nВ начале игры я кладу конфеты в вазу. так как у тебя мешок пустой. В следующих раундах в вазу кладёт конфеты проигравший в прошлом раунде игрок. Ходить будем друг после друга, превый ход в раунде делает победитель прошлого раунда. За один ход можно забрать определённое количество конфет, в каждом раунде оно меняется. Все конфеты оппонента достаются сделавшему последний ход.\nТы победишь, если у меня не останется ни одной конфеты в мешке.\nЖми /game , если согласен.')
@@ -88,7 +88,7 @@ async def mes_all(message: Message):
                 games.data[message.from_id].win = 0
                 games.data[message.from_id].oppobag += games.data[message.from_id].total
                 games.overwrite()
-                await message.answer(f'Ты победил!! Твой приз {change_word(games.data[message.from_id].total)}!!! Желаешь повторить триумф - Жми /game')
+                await message.answer(f'Победа!! Твой приз {change_word(games.data[message.from_id].total)}!!! Желаешь повторить триумф - Жми /game')
             else:
                 botnum = games.data[message.from_id].move()
                 if games.data[message.from_id].number == 0:
