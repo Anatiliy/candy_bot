@@ -95,7 +95,7 @@ async def mes_all(message: Message):
                 games.data[message.from_id].win = 0
                 games.data[message.from_id].oppobag += games.data[message.from_id].total
                 games.overwrite()
-                await message.answer(f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}.\nЖелаешь повторить триумф - Жми /game')
+                await message.answer(f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag)}.\nЖелаешь повторить триумф - Жми /game')
             else:
                 botnum = games.data[message.from_id].move()
                 if games.data[message.from_id].number == 0:
