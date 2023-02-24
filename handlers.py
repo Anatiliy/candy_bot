@@ -113,7 +113,7 @@ async def mes_all(message: Message):
                     games.data[message.from_id].level += 1  # увеличиваем уровень игры
                     await message.answer(
                         f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в мешке пусто.\nТы выиграл у меня все конфеты, но, если честно, я тебе потдавался. Если хочешь увидеть как я умею считать - жми /game , а я пойду в магазин куплю ещё конфет.')
-                elif not games.data[message.from_id].level:
+                elif games.data[message.from_id].level:
                     games.data[message.from_id].level += 1  # увеличиваем уровень игры
                     await message.answer(
                         f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)},а у меня в мешке сново пусто.\nТы опять выиграл у меня все конфеты, но, если честно, мне просто было лень считать. Если хочешь сыграть на полную силу - жми /game , а я - в магазин за конфетами.')
