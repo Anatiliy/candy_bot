@@ -60,6 +60,7 @@ class GameData:
     # метод, осуществляющий ход игрока
     def botContribution(self, handout=0):
         self.start = 1
+        self.lot = randint(10, 28)
         if handout:  # если у бота нехватает конфет, и ему одолжил их игрок
             self.total = 50
             self.oppobag -= handout
