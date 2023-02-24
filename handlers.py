@@ -123,7 +123,7 @@ async def mes_all(message: Message):
     elif num.isdigit() and games.data[message.from_id].botbag < 50 and int(num) == 50 - games.data[message.from_id].botbag:  # если игра не начата и введёное число равно недостающему боту количеству конфет
         games.data[message.from_id].botContribution(handout=int(num))
         await message.answer(
-            f'Благодарю!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
+            f'Благодарю!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в {change_word("вазу", games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
     else:
         await message.answer('Сыграем ешё разок? Жми /game , если согласен.')
         
