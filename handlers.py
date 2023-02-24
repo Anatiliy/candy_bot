@@ -9,17 +9,17 @@ games.read_data()
 # функция позволяет правильно выводить слово "конфеты" на экран, в зависимости от количества конфет
 def change_word(word: str, number: int):
     number = str(number)
-    if word in ('мешке', 'приз'):
+    if word in ('мешке', 'приз', 'Осталось'):
         if number[-1] in ('2', '3', '4') and number not in ('12', '13', '14'):
             return f'{word} {number} конфеты'
         elif number[-1] == '1' and number != '11':
             return f'{word} {number} конфета'
         else:
             return f'{word} {number} конфет'
-    elif word in ('вазу', 'мне'):
-        if number[-1] in ('2', '3', '4'):
+    elif word in ('вазу', 'забрал', 'мне', 'забираю'):
+        if number[-1] in ('2', '3', '4') and number not in ('12', '13', '14'):
             return f'{word} {number} конфеты'
-        elif number[-1] == '1':
+        elif number[-1] == '1' and number != '11':
             return f'{word} {number} конфету'
         else:
             return f'{word} {number} конфет'
@@ -56,11 +56,11 @@ async def mes_game(message: Message):
                     await message.answer(f'Жаждешь реванша? Я не против.\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет кладёшь в вазу?')
                 elif games.data[message.from_id].win and games.data[message.from_id].oppobag < 50:  # если в прошлой игре победил бот и у человека в мешке меньше 50 конфет
                     games.data[message.from_id].botContribution()
-                    await message.answer(f'Жаждешь реванша? Я не против.\nУ меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}, у тебя в {change_word("мешке", games.data[message.from_id].oppobag)}. Этого не достаточно.\nТак уж и быть, положу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
+                    await message.answer(f'Жаждешь реванша? Я не против.\nУ меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}, у тебя в {change_word("мешке", games.data[message.from_id].oppobag)}. Этого не достаточно.\nТак уж и быть, положу в {change_word("вазу", games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
                 elif 0 < games.data[message.from_id].botbag < 50:  # если у бота в мешке меньше 50 конфет
                     await message.answer(f'У меня в {change_word("мешке", games.data[message.from_id].botbag)}. Этого недостаточно, чтобы продолжить игру.\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}.\n Если хочешь продолжить игру, можешь добавить {change_word("мне", 50 - games.data[message.from_id].botbag)}, и продолжим игру. Если согласен введи {50 - games.data[message.from_id].botbag}.')
                 elif games.data[message.from_id].botbag == 0:  # если у бота в мешке 0 конфет
-                    games.data[message.from_id].botbag = 500
+                    games.data[message.from_id].botbag = 300
                     games.data[message.from_id].botContribution()
                     await message.answer(
                         f'Молодец, что решил продолжить. Я, теперь, внимательнее буду, так что ты тоже не зевай, и внимательней считай.\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в {change_word("вазу", games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
@@ -76,7 +76,7 @@ async def mes_game(message: Message):
         games.newGame(message.from_id, message.from_user.first_name)
         games.data[message.from_id].botContribution()
         await message.answer(
-            f'Отлично!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
+            f'Отлично!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в {change_word("вазу", games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
 
 
 # основная логика игры
@@ -106,15 +106,17 @@ async def mes_all(message: Message):
                 games.data[message.from_id].count += 1
                 games.data[message.from_id].win = 0
                 games.data[message.from_id].oppobag += games.data[message.from_id].total
-                games.overwrite()
                 if games.data[message.from_id].botbag:  # если у бота есть в мешке конфеты
+                    games.overwrite()
                     await message.answer(f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag)}.\nЖелаешь повторить триумф - Жми /game')
                 elif not games.data[message.from_id].level:
-                    games.data[message.from_id].level += 1  # увеличиваем уровень игры
+                    games.data[message.from_id].level = 1  # увеличиваем уровень игры
+                    games.overwrite()
                     await message.answer(
                         f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в мешке пусто.\nТы выиграл у меня все конфеты, но, если честно, я тебе потдавался. Если хочешь увидеть как я умею считать - жми /game , а я пойду в магазин куплю ещё конфет.')
                 elif games.data[message.from_id].level:
                     games.data[message.from_id].level += 1  # увеличиваем уровень игры
+                    games.overwrite()
                     await message.answer(
                         f'Победа!! Твой приз {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)},а у меня в мешке сново пусто.\nТы опять выиграл у меня все конфеты, но, если честно, мне просто было лень считать. Если хочешь сыграть на полную силу - жми /game , а я - в магазин за конфетами.')
 
@@ -126,7 +128,7 @@ async def mes_all(message: Message):
                     games.data[message.from_id].win = 1
                     games.data[message.from_id].botbag += games.data[message.from_id].total
                     games.overwrite()
-                    await message.answer(f'Я {change_word("забрал", botnum)} и победил!!! Мой {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}.\nЖелаешь реванша - жми /game')
+                    await message.answer(f'Я {change_word("забрал", botnum)} и победил!!! Мой {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag)}.\nЖелаешь реванша - жми /game')
                 else:
                     await message.answer(f'Я {change_word("забрал", botnum)}. {change_word("Осталось", games.data[message.from_id].number)}. Сколько конфет забераешь?')
         elif num.isdigit() and int(num) > games.data[message.from_id].number:
