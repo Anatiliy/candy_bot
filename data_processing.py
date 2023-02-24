@@ -11,7 +11,7 @@ class GameData:
         self.total = 0  # атребут, фиксирующий количества конфет в игре
         self.count = 0  # атребут, фиксирующий количество оконченых игр
         self.win = 'None'  # атребут пртнимает значение 1 если победил бот и значение 0 если победил игрок
-        self.botbag = 500  # количество конфет в мешке бота
+        self.botbag = 300  # количество конфет в мешке бота
         self.oppobag = 0  # количество конфет в мешке игрока
         self.lot = 0  # количество конфет, которое можно взять из вазы
         self.level = 0  # уровень игры
@@ -31,8 +31,8 @@ class GameData:
         self.win = lst[5]
         self.botbag = lst[6]
         self.oppobag = lst[7]
-        self.lot = [8]
-        self.level = [9]
+        self.lot = lst[8]
+        self.level = lst[9]
 
     # метод, осуществляющий ход бота
     def move(self):
