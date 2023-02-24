@@ -49,7 +49,7 @@ async def mes_menu(message: Message):
 @dp.message_handler(commands=['game'])
 async def mes_game(message: Message):
     if message.from_id in games.data:
-        if not games.data[message.from_id].start:
+        if not games.data[message.from_id].start:  # если игра не начата
             if games.data[message.from_id].count:  # если сыграли хотябы одну игру
                 if games.data[message.from_id].win and games.data[message.from_id].oppobag > 49:  # если в прошлой игре победил бот и у человека в мешке больше 49 конфет
                     games.newGame(message.from_id, message.from_user.first_name)
@@ -58,7 +58,7 @@ async def mes_game(message: Message):
                     games.data[message.from_id].botContribution()
                     await message.answer(f'Жаждешь реванша? Я не против.\nУ меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}, у тебя в {change_word("мешке", games.data[message.from_id].oppobag)}. Этого не достаточно.\nТак уж и быть, положу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
                 elif games.data[message.from_id].botbag < 50:  # если у бота в мешке меньше 50 конфет
-                    await message.answer(f'У меня в {change_word("мешке", games.data[message.from_id].botbag)}. Этого недостаточно, чтобы продолжить игру.\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}.\n Если хочешь продолжить игру, можешь добавить мне {change_word(50 - games.data[message.from_id].botbag)}, и продолжим игру. Если согласен введи {50 - games.data[message.from_id].botbag}.')
+                    await message.answer(f'У меня в {change_word("мешке", games.data[message.from_id].botbag)}. Этого недостаточно, чтобы продолжить игру.\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}.\n Если хочешь продолжить игру, можешь добавить {change_word("мне", 50 - games.data[message.from_id].botbag)}, и продолжим игру. Если согласен введи {50 - games.data[message.from_id].botbag}.')
                 else:
                     games.data[message.from_id].botContribution()
                     await message.answer(f'В этот раз я своего не упущу!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в {change_word("вазу", games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
