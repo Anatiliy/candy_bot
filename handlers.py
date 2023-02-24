@@ -78,7 +78,7 @@ async def mes_all(message: Message):
                 games.data[message.from_id].number = int(num)
                 games.data[message.from_id].oppobag -= int(num)
                 botnum = games.data[message.from_id].move()
-                await message.answer(f'Ты положил в вазу {change_word(games.data[message.from_id].total)}. Я забираю {change_word(botnum)}. В вазе осталось {change_word(games.data[message.from_id].number)}. Сколько конфет забераешь?')
+                await message.answer(f'Ты положил в {change_word("вазу", games.data[message.from_id].total)}. Я {change_word("забираю", botnum)}. В вазе {change_word("осталось", games.data[message.from_id].number)}. Сколько конфет забераешь?')
             elif int(num) > games.data[message.from_id].oppobag:
                 await message.answer('У тебя нет столько конфет')
             elif int(num) > 100:
@@ -104,9 +104,9 @@ async def mes_all(message: Message):
                     games.data[message.from_id].win = 1
                     games.data[message.from_id].botbag += games.data[message.from_id].total
                     games.overwrite()
-                    await message.answer(f'Я забрал {change_word(botnum)} и победил!!! Мой {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}.\nЖелаешь реванша - жми /game')
+                    await message.answer(f'Я {change_word("забрал", botnum)} и победил!!! Мой {change_word("приз", games.data[message.from_id].total)}!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}.\nЖелаешь реванша - жми /game')
                 else:
-                    await message.answer(f'Я забрал {change_word(botnum)}. Осталось {change_word(games.data[message.from_id].number)}. Сколько конфет забераешь?')
+                    await message.answer(f'Я {change_word("забрал", botnum)}. {change_word("Осталось", games.data[message.from_id].number)}. Сколько конфет забераешь?')
         elif num.isdigit() and int(num) > games.data[message.from_id].number:
             await message.answer('Столько конфет нет. Возьми поменьше.')
         else:
