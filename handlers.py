@@ -16,6 +16,13 @@ def change_word(word: str, number: int):
             return f'{word} {number} конфета'
         else:
             return f'{word} {number} конфет'
+    elif word in ('вазу',):
+        if number[-1] in ('2', '3', '4'):
+            return f'{word} {number} конфеты'
+        elif number[-1] == '1':
+            return f'{word} {number} конфету'
+        else:
+            return f'{word} {number} конфет'
     else:
         if number[-1] == '1' and number != '11':
             return f'{word} {number} конфеты'
@@ -54,7 +61,7 @@ async def mes_game(message: Message):
                     await message.answer(f'У меня в {change_word("мешке", games.data[message.from_id].botbag)}. Этого недостаточно, чтобы продолжить игру.\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}.\n Если хочешь продолжить игру, можешь добавить мне {change_word(50 - games.data[message.from_id].botbag)}, и продолжим игру. Если согласен введи {50 - games.data[message.from_id].botbag}.')
                 else:
                     games.data[message.from_id].botContribution()
-                    await message.answer(f'В этот раз я своего не упущу!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
+                    await message.answer(f'В этот раз я своего не упущу!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в {change_word("вазу", games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
             else:
                 games.newGame(message.from_id, message.from_user.first_name)
                 await message.answer(f'Продолжим!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
