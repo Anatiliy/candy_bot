@@ -71,7 +71,7 @@ async def mes_game(message: Message):
 @dp.message_handler()
 async def mes_all(message: Message):
     num = message.text
-    if games.data[message.from_id].start: # если игра начата
+    if games.data[message.from_id].start:  # если игра начата
         if num.isdigit() and not games.data[message.from_id].number and games.data[message.from_id].win and games.data[message.from_id].oppobag: # если в вазе нет конфет и в прошлом раунде победил бот
             if 50 <= int(num) <= 100 and int(num) <= games.data[message.from_id].oppobag:
                 games.data[message.from_id].total = int(num)
@@ -87,7 +87,7 @@ async def mes_all(message: Message):
                 await message.answer('Мало, надо больше.')
         elif num.isdigit() and int(num) > games.data[message.from_id].lot:
             await message.answer(f'Не жадничей. Не больше {games.data[message.from_id].lot} конфет, помни об этом.')
-        elif num.isdigit() and int(num) <= games.data[message.from_id].number and 0 < int(num) < games.data[message.from_id].lot + 1:
+        elif num.isdigit() and int(num) <= games.data[message.from_id].number and 0 < int(num) <= games.data[message.from_id].lot:
             games.data[message.from_id].opponent(int(num))
             if games.data[message.from_id].number == 0:
                 games.data[message.from_id].start = 0
@@ -113,11 +113,10 @@ async def mes_all(message: Message):
             await message.answer('Мы играть будем, или ерунду друг другу писать?')
     elif not games.data[message.from_id].count:  # если игра ещё не начата и не одной игры не сыграно
         await message.answer('Хорошь болтать, давай играть.\nЖми /game и погнали')
-    elif not games.data[message.from_id].start and num.isdigit() and int(num) == 50 - games.data[message.from_id].botbag:  # если игра не начата и введёное число равно недостающему боту количеству конфет
+    elif num.isdigit() and games.data[message.from_id].botbag < 50 and int(num) == 50 - games.data[message.from_id].botbag:  # если игра не начата и введёное число равно недостающему боту количеству конфет
         games.data[message.from_id].botContribution(handout=int(num))
         await message.answer(
             f'Благодарю!!!\nУ тебя в {change_word("мешке", games.data[message.from_id].oppobag)}, у меня в {change_word("мешке", games.data[message.from_id].botbag + games.data[message.from_id].total)}. Я кладу в вазу {change_word(games.data[message.from_id].total)}.\nБрать можно не {change_word("больше", games.data[message.from_id].lot)}.\nСколько конфет забераешь?')
-
     else:
         await message.answer('Сыграем ешё разок? Жми /game , если согласен.')
         
