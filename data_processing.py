@@ -36,17 +36,17 @@ class GameData:
 
     # метод, осуществляющий ход бота
     def move(self):
-        if self.number < self.lot + 1:
+        if self.number <= self.lot:
             result = self.number
             self.number = 0
             return result
-        elif self.number == self.lot + 1:
-            result = randint(1, self.lot)
-            self.number -= result
-            return result
-        elif self.lot < self.number < self.lot * 2 + 1:
+        elif self.level and self.lot + 1 < self.number <= self.lot * 2 + 1:
             result = self.number - self.lot + 1
             self.number = self.lot + 1
+            return result
+        elif self.level > 1 and self.number <= self.lot * 3 + 2:
+            result = self.number - self.lot * 2 + 2
+            self.number = self.lot * 2 + 2
             return result
         else:
             result = randint(1, self.lot)
