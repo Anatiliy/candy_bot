@@ -14,10 +14,11 @@ class GameData:
         self.botbag = 500  # количество конфет в мешке бота
         self.oppobag = 0  # количество конфет в мешке игрока
         self.lot = 0  # количество конфет, которое можно взять из вазы
+        self.level = 0  # уровень игры
 
     # метод конвертирующий объект класса в строку
     def toStr(self):
-        return ';'.join(list(map(lambda item: str(item) if not isinstance(item, str) else item, [self.start, self.number, self.opponame, self.total, self.count, self.win, self.botbag, self.oppobag])))
+        return ';'.join(list(map(lambda item: str(item) if not isinstance(item, str) else item, [self.start, self.number, self.opponame, self.total, self.count, self.win, self.botbag, self.oppobag, self.lot, self.level])))
 
     # метод конвертирующийстроку в объект класса 
     def toCB(self, data:str):
@@ -30,6 +31,8 @@ class GameData:
         self.win = lst[5]
         self.botbag = lst[6]
         self.oppobag = lst[7]
+        self.lot = [8]
+        self.level = [9]
 
     # метод, осуществляющий ход бота
     def move(self):
