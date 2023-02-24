@@ -16,7 +16,7 @@ def change_word(word: str, number: int):
             return f'{word} {number} конфета'
         else:
             return f'{word} {number} конфет'
-    elif word in ('вазу',):
+    elif word in ('вазу', 'мне'):
         if number[-1] in ('2', '3', '4'):
             return f'{word} {number} конфеты'
         elif number[-1] == '1':
